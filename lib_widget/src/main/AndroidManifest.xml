@@ -9,6 +9,9 @@
         <activity android:name=".ui.DoubleWaveActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.RecyclerViewItemDecorationActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 

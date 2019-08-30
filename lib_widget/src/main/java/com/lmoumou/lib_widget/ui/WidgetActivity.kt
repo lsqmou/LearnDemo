@@ -45,16 +45,20 @@ class WidgetActivity : AppCompatActivity() {
                     holder.itemView.setOnClickListener {
                         when (position) {
                             0 -> DoubleWaveActivity.startThis(this@WidgetActivity)
+                            1 -> RecyclerViewItemDecorationActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
             }
         }
+
+//        mRecyclerView.addItemDecoration()
     }
 
     inner class WidgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private fun initData() {
         dataList.add("水波浪")
+        dataList.add("RecyclerView分割线")
     }
 }
