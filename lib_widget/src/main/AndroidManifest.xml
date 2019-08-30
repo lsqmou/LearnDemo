@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.lmoumou.lib_widget">
+
+    <application>
+
+        <activity android:name=".ui.WidgetActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.DoubleWaveActivity"
+                  android:screenOrientation="portrait"/>
+
+    </application>
+
+
+</manifest>
