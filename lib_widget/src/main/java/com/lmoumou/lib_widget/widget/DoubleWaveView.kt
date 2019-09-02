@@ -34,7 +34,7 @@ class DoubleWaveView : View {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         mPath.reset()
-        mPaint.color = Color.parseColor("#65ff0000")
+        mPaint.color = Color.parseColor("#1affffff")
 
         mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 4).toFloat())
         for (i in 0 until 3) {
@@ -47,7 +47,7 @@ class DoubleWaveView : View {
         canvas.drawPath(mPath, mPaint)
 
         mPaint.reset()
-        mPaint.color = Color.parseColor("#6500ff00")
+        mPaint.color = Color.parseColor("#1affffff")
         mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 4).toFloat())
         for (i in 0 until 3) {
             mPath.rQuadTo((widths / 4).toFloat(), 70F, (widths / 2).toFloat(), 0F)
@@ -60,16 +60,19 @@ class DoubleWaveView : View {
     }
 
     fun startAnimation() {
-        ValueAnimator.ofInt(0, widths).apply {
-            duration = 3000
-            repeatCount = ValueAnimator.INFINITE
-            interpolator = LinearInterpolator()
-            addUpdateListener {
-                dx = it.animatedValue as Int
-                invalidate()
+        post {
+            ValueAnimator.ofInt(0, widths).apply {
+                duration = 3000
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    dx = it.animatedValue as Int
+                    invalidate()
+                }
+                start()
             }
-            start()
         }
+
     }
 
 }

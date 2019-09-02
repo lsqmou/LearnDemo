@@ -22,9 +22,9 @@ class DoubleWaveActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_double_wave)
-
+        mDoubleWaveView.startAnimation()
         btStart.setOnClickListener {
-         mDoubleWaveView.startAnimation()
+
         }
     }
 }
