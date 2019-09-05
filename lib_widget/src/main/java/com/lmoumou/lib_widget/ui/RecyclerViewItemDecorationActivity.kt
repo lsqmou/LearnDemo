@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.lmoumou.lib_widget.R
 import com.lmoumou.lib_widget.widget.SpaceItemDecoration
-import com.lmoumou.lib_widget.widget.SpaceItemDecoration1
 import kotlinx.android.synthetic.main.activity_recyclerview_itemdecoration.*
 import kotlinx.android.synthetic.main.item_decoration1.view.*
 
@@ -37,17 +36,8 @@ class RecyclerViewItemDecorationActivity : AppCompatActivity() {
 
         initData()
 
-//        rcv1.addItemDecoration(
-//            HorizontalItemDecoration(
-//                this,
-//                50,
-//                300,
-//                dividerResId = R.drawable.test_line,
-//                isShowBootomDicider = false
-//            )
-//        )
 
-        rcv1.addItemDecoration(SpaceItemDecoration1(10,50,10, Color.RED))
+        rcv1.addItemDecoration(SpaceItemDecoration(10,50,10, Color.RED,isShowBottom = false))
 
         rcv1.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -63,7 +53,7 @@ class RecyclerViewItemDecorationActivity : AppCompatActivity() {
         }
 
         rcv2.layoutManager = GridLayoutManager(this, 4)
-        rcv2.addItemDecoration(SpaceItemDecoration1(0,50,10, Color.RED))
+        rcv2.addItemDecoration(SpaceItemDecoration(0,10,10, Color.RED,isShowBottom = false))
 //        rcv2.addItemDecoration(SpaceItemDecoration(10, 10, 10, Color.RED))
         rcv2.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -77,8 +67,6 @@ class RecyclerViewItemDecorationActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
 
     private fun initData() {

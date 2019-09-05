@@ -46,6 +46,7 @@ class WidgetActivity : AppCompatActivity() {
                         when (position) {
                             0 -> DoubleWaveActivity.startThis(this@WidgetActivity)
                             1 -> RecyclerViewItemDecorationActivity.startThis(this@WidgetActivity)
+                            2 -> RecyclerViewDragActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -60,5 +61,6 @@ class WidgetActivity : AppCompatActivity() {
     private fun initData() {
         dataList.add("水波浪")
         dataList.add("RecyclerView分割线")
+        dataList.add("RecyclerView拖动")
     }
 }

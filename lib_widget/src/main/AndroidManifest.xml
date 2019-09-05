@@ -12,6 +12,9 @@
         <activity android:name=".ui.RecyclerViewItemDecorationActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.RecyclerViewDragActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 
