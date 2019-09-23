@@ -47,6 +47,7 @@ class WidgetActivity : AppCompatActivity() {
                             0 -> DoubleWaveActivity.startThis(this@WidgetActivity)
                             1 -> RecyclerViewItemDecorationActivity.startThis(this@WidgetActivity)
                             2 -> RecyclerViewDragActivity.startThis(this@WidgetActivity)
+                            3->CalendarActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -62,5 +63,6 @@ class WidgetActivity : AppCompatActivity() {
         dataList.add("水波浪")
         dataList.add("RecyclerView分割线")
         dataList.add("RecyclerView拖动")
+        dataList.add("日历")
     }
 }

@@ -15,6 +15,9 @@
         <activity android:name=".ui.RecyclerViewDragActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.CalendarActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 

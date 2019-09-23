@@ -36,10 +36,10 @@ class DoubleWaveView : View {
         mPath.reset()
         mPaint.color = Color.parseColor("#1affffff")
 
-        mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 4).toFloat())
+        mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 2).toFloat())
         for (i in 0 until 3) {
-            mPath.rQuadTo((widths / 4).toFloat(), -70F, (widths / 2).toFloat(), 0F)
-            mPath.rQuadTo((widths / 4).toFloat(), 70F, (widths / 2).toFloat(), 0F)
+            mPath.rQuadTo((widths / 4).toFloat(), -50F, (widths / 2).toFloat(), 0F)
+            mPath.rQuadTo((widths / 4).toFloat(), 50F, (widths / 2).toFloat(), 0F)
         }
         mPath.lineTo(widths.toFloat(), heights.toFloat())
         mPath.lineTo(0F, heights.toFloat())
@@ -48,10 +48,10 @@ class DoubleWaveView : View {
 
         mPaint.reset()
         mPaint.color = Color.parseColor("#1affffff")
-        mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 4).toFloat())
+        mPath.moveTo((-widths + dx).toFloat(), (heights / 5 * 2).toFloat())
         for (i in 0 until 3) {
-            mPath.rQuadTo((widths / 4).toFloat(), 70F, (widths / 2).toFloat(), 0F)
-            mPath.rQuadTo((widths / 4).toFloat(), -70F, (widths / 2).toFloat(), 0F)
+            mPath.rQuadTo((widths / 4).toFloat(), 50F, (widths / 2).toFloat(), 0F)
+            mPath.rQuadTo((widths / 4).toFloat(), -50F, (widths / 2).toFloat(), 0F)
         }
         mPath.lineTo(widths.toFloat(), heights.toFloat())
         mPath.lineTo(0F, heights.toFloat())

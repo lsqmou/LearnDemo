@@ -2,6 +2,7 @@ package com.lmoumou.lib_widget.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Canvas
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -46,8 +47,8 @@ class RecyclerViewDragActivity : AppCompatActivity() {
     private val callBack: ItemTouchHelper.Callback by lazy {
         object : ItemTouchHelper.Callback() {
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                var swipFlag = 0
-                var dragflag: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                val swipFlag = 0
+                val dragflag: Int = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
                 return makeMovementFlags(dragflag, swipFlag)
             }
 
