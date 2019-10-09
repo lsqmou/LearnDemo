@@ -59,7 +59,6 @@ class CalendarPageAdapter(private val mContext: Context) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val view = views[position % views.size]
-        dataList.clear()
         val calendar2 = getCurrentDate(position)
         dataList.addAll(calendarTools.initDateList(calendar2.get(Calendar.YEAR), calendar2.get(Calendar.MONTH) + 1))
         adapter.notifyDataSetChanged()

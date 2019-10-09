@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import com.lmoumou.lib_widget.entity.DateEntity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PagerSnapHelper
 import com.lmoumou.lib_widget.R
 import com.lmoumou.lib_widget.adapter.CalendarAdapter
+import com.lmoumou.lib_widget.adapter.CalendarAdapter2
 import com.lmoumou.lib_widget.adapter.CalendarPageAdapter
+import com.lmoumou.lib_widget.entity.DateEntity
 import com.lmoumou.lib_widget.utils.CalendarTool
 import kotlinx.android.synthetic.main.activity_calendar.*
 
@@ -24,17 +27,9 @@ class CalendarActivity : AppCompatActivity() {
         }
     }
 
-    private val adapter: CalendarAdapter by lazy { CalendarAdapter(this, CalendarTool<DateEntity>().initDateList()) }
-
-    private val pageAdapter: CalendarPageAdapter by lazy { CalendarPageAdapter(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
 
-        rcvCalendar.layoutManager = GridLayoutManager(this, 7)
-        rcvCalendar.adapter = adapter
-
-        vpCalendar.adapter = pageAdapter
-        vpCalendar.currentItem = 0
     }
 }
