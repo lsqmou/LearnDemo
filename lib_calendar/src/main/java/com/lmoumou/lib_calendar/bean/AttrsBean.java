@@ -3,8 +3,6 @@ package com.lmoumou.lib_calendar.bean;
 import android.graphics.Color;
 import com.lmoumou.lib_calendar.R;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class AttrsBean {
@@ -17,21 +15,21 @@ public class AttrsBean {
     private boolean showLastNext = true;//是否显示上个月、下个月
     private boolean showLunar = true;//是否显示农历
     private boolean switchChoose = true;//单选时切换月份，是否选中上次的日期
-    private int colorSolarNormal = Color.BLACK;//阳历的日期颜色
-    private int colorSolarSelect = Color.WHITE;//阳历日期选中的颜色
+    private int colorSolarNormal = Color.parseColor("#9C9EA8");//阳历的日期颜色
+    private int colorSolarSelect = Color.parseColor("#FFFFFF");//阳历日期选中的颜色
     private int colorChoose = Color.WHITE;//选中的日期文字颜色
     private int sizeSolar = 14;//阳历日期文字尺寸
-    private int dayBg = R.drawable.blue_circle;//选中的背景
+    private int dayBg = R.drawable.violet_circle;//选中的背景
     private int subscript = R.mipmap.ic_already_read;//下标
     private Map<String, String> specifyMap;//指定日期对应的文字map
     private int chooseType = 0;//0->单选,1->多选,2->范围选择
-    private ArrayList<String> subscriptArray;//需要展示下标的集合
+    private Map<String, ItemAttrsBeen> subscriptArray;//需要展示下标的集合
 
-    public ArrayList<String> getSubscriptArray() {
+    public Map<String, ItemAttrsBeen> getSubscriptArray() {
         return subscriptArray;
     }
 
-    public void setSubscriptArray(ArrayList<String> subscriptArray) {
+    public void setSubscriptArray(Map<String, ItemAttrsBeen> subscriptArray) {
         this.subscriptArray = subscriptArray;
     }
 

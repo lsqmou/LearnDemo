@@ -7,7 +7,11 @@ import android.util.Log
 import android.view.View
 import com.lmoumou.lib_calendar.R
 import com.lmoumou.lib_calendar.bean.AttrsBean
+import com.lmoumou.lib_calendar.bean.DateBean
+import com.lmoumou.lib_calendar.bean.ItemAttrsBeen
 import com.lmoumou.lib_calendar.listener.CalendarViewAdapter
+import com.lmoumou.lib_calendar.listener.OnPagerChangeListener
+import com.lmoumou.lib_calendar.listener.OnSingleChooseListener
 import com.lmoumou.lib_calendar.utils.CalendarUtil
 import com.lmoumou.lib_calendar.utils.SolarUtil
 
@@ -21,6 +25,10 @@ class CalendarView : ViewPager {
     private var initDate: IntArray? = null//日历初始显示的年月
     private lateinit var startDate: IntArray //日历的开始年、月
     private lateinit var endDate: IntArray//日历的结束年、月
+    private val lastClickDate = IntArray(2)//记录单选的ViewPager position以及选中的日期
+
+    private var singleChooseListener: OnSingleChooseListener? = null
+    private var pagerChangeListener: OnPagerChangeListener? = null
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -30,7 +38,7 @@ class CalendarView : ViewPager {
                 val attr = ta.getIndex(i)
                 when (attr) {
                     R.styleable.CalendarView_show_last_next -> mAttrsBean.isShowLastNext = ta.getBoolean(attr, true)
-                    R.styleable.CalendarView_show_lunar -> mAttrsBean.isShowLunar = ta.getBoolean(attr, true)
+//                    R.styleable.CalendarView_show_lunar -> mAttrsBean.isShowLunar = ta.getBoolean(attr, true)
 //                    R.styleable.CalendarView_show_holiday -> mAttrsBean.setShowHoliday(ta.getBoolean(attr, true))
 //                    R.styleable.CalendarView_show_term -> mAttrsBean.setShowTerm(ta.getBoolean(attr, true))
                     R.styleable.CalendarView_switch_choose -> mAttrsBean.isSwitchChoose = ta.getBoolean(attr, true)
@@ -44,8 +52,8 @@ class CalendarView : ViewPager {
 //                        )
 //                    )
 //                    R.styleable.CalendarView_holiday_color -> mAttrsBean.setColorHoliday(ta.getColor(attr, mAttrsBean.getColorHoliday()))
-                    R.styleable.CalendarView_choose_color -> mAttrsBean.colorChoose =
-                        ta.getColor(attr, mAttrsBean.colorChoose)
+//                    R.styleable.CalendarView_choose_color -> mAttrsBean.colorChoose =
+//                        ta.getColor(attr, mAttrsBean.colorChoose)
                     R.styleable.CalendarView_day_bg -> mAttrsBean.dayBg = ta.getResourceId(attr, mAttrsBean.dayBg)
                     R.styleable.CalendarView_choose_type -> mAttrsBean.chooseType = ta.getInt(attr, 0)
                 }
@@ -88,8 +96,73 @@ class CalendarView : ViewPager {
         calendarPagerAdapter!!.setOnCalendarViewAdapter(item_layout, calendarViewAdapter)
         adapter = calendarPagerAdapter
         currentPosition = CalendarUtil.dateToPosition(initDate!![0], initDate!![1], startDate[0], startDate[1])
+
+        //单选
+        if (mAttrsBean.chooseType == 0) {
+            val singleDate = mAttrsBean.singleDate
+            if (singleDate != null) {
+                lastClickDate[0] = CalendarUtil.dateToPosition(singleDate[0], singleDate[1], startDate[0], startDate[1])
+                lastClickDate[1] = singleDate[2]
+            }
+        }
+
         Log.e("CalendarView", "currentPosition->$currentPosition")
         setCurrentItem(currentPosition, false)
+
+        addOnPageChangeListener(object : SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                refreshMonthView(position)
+                currentPosition = position
+                if (pagerChangeListener != null) {
+                    val date = CalendarUtil.positionToDate(position, startDate[0], startDate[1])
+                    pagerChangeListener?.onPagerChanged(intArrayOf(date[0], date[1], lastClickDate[1]))
+                }
+
+            }
+        })
+    }
+
+    /**
+     * 设置月份切换回调
+     *
+     * @param pagerChangeListener
+     */
+    fun setOnPagerChangeListener(pagerChangeListener: OnPagerChangeListener) {
+        this.pagerChangeListener = pagerChangeListener
+    }
+
+    /**
+     * 设置单选时选中的日期
+     *
+     * @param day
+     */
+    fun setLastClickDay(day: Int) {
+        lastClickDate[0] = currentPosition
+        lastClickDate[1] = day
+    }
+
+    /**
+     * 刷新MonthView
+     *
+     * @param position
+     */
+    private fun refreshMonthView(position: Int) {
+        val monthView = calendarPagerAdapter?.getViews()?.get(position)
+        val flag = mAttrsBean.isSwitchChoose || lastClickDate[0] == position
+        monthView?.refresh(lastClickDate[1], flag)
+    }
+
+    /**
+     * 设置日期单选回调
+     *
+     * @param singleChooseListener
+     */
+    fun setOnSingleChooseListener(singleChooseListener: OnSingleChooseListener) {
+        this.singleChooseListener = singleChooseListener
+    }
+
+    fun getSingleChooseListener(): OnSingleChooseListener? {
+        return singleChooseListener
     }
 
     /**
@@ -111,7 +184,7 @@ class CalendarView : ViewPager {
      * @return
      */
     fun setInitDate(date: String): CalendarView {
-        Log.e("CalendarView","date->$date")
+        Log.e("CalendarView", "date->$date")
         initDate = CalendarUtil.strToArray(date)
         return this
     }
@@ -140,8 +213,8 @@ class CalendarView : ViewPager {
     /**
      * 设置需要展示下标的日期
      * */
-    fun setSubscript(arrays: ArrayList<String>): CalendarView {
-        mAttrsBean.subscriptArray = arrays
+    fun setSubscript(map: Map<String, ItemAttrsBeen>): CalendarView {
+        mAttrsBean.subscriptArray = map
         return this
     }
 

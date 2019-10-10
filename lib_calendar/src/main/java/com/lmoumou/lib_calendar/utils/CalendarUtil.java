@@ -1,14 +1,18 @@
 package com.lmoumou.lib_calendar.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import com.lmoumou.lib_calendar.R;
 import com.lmoumou.lib_calendar.bean.DateBean;
+import com.lmoumou.lib_calendar.bean.ItemAttrsBeen;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public class CalendarUtil {
     /**
@@ -18,7 +22,7 @@ public class CalendarUtil {
      * @param month 当前月份
      * @return
      */
-    public static List<DateBean> getMonthDate(int year, int month, ArrayList<String> map) {
+    public static List<DateBean> getMonthDate(int year, int month, Map<String, ItemAttrsBeen> map) {
         List<DateBean> datas = new ArrayList<>();
         int week = SolarUtil.getFirstWeekOfMonth(year, month - 1);
 
@@ -60,7 +64,7 @@ public class CalendarUtil {
         return datas;
     }
 
-    private static DateBean initDateBean(int year, int month, int day, int type, ArrayList<String> map) {
+    private static DateBean initDateBean(int year, int month, int day, int type, Map<String, ItemAttrsBeen> map) {
         DateBean dateBean = new DateBean();
         dateBean.setSolar(year, month, day);
 
@@ -69,19 +73,23 @@ public class CalendarUtil {
             dateBean.setLunar(new String[]{temp[0], temp[1]});
             dateBean.setLunarHoliday(temp[2]);
         } else {
-            Log.e("CalendarUtil","test->"+year + "." + month + "." + day);
 
-            if (map.contains(year + "." + month + "." + day)) {
+            String key = year + "." + month + "." + day;
+            if (map.containsKey(key)) {
+                Log.e("CalendarUtil", "test->" + key);
+                ItemAttrsBeen itemAttrsBeen = map.get(key);
+                dateBean.setSubscriptResId(itemAttrsBeen.getSubscriptResId());
                 dateBean.setShowSubscript(true);
+                dateBean.setTextColorNormal(itemAttrsBeen.getTextColor());
+                dateBean.setBgResId(itemAttrsBeen.getBgResId());
+//                dateBean.setLunar(new String[]{"", map.get(key), ""});
             } else {
+                dateBean.setSubscriptResId(0);
                 dateBean.setShowSubscript(false);
-            }
-
-//            if (map.containsKey(year + "." + month + "." + day)) {
-//                dateBean.setLunar(new String[]{"", map.get(year + "." + month + "." + day), ""});
-//            } else {
+                dateBean.setTextColorNormal(Color.parseColor("#9C9EA8"));
+                dateBean.setBgResId(R.drawable.item_bg_normal);
 //                dateBean.setLunar(new String[]{"", "", ""});
-//            }
+            }
         }
 
         dateBean.setType(type);

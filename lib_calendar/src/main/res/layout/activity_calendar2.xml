@@ -7,12 +7,18 @@
 
     <com.lmoumou.lib_calendar.widget.WeekView
             android:layout_width="match_parent"
-            android:layout_height="35dp"/>
+            android:layout_height="35dp"
+            app:week_color="#9C9EA8"/>
+
+    <View android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="#F5F6FA"/>
 
     <com.lmoumou.lib_calendar.widget.CalendarView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            app:show_last_next="false"/>
+            android:layout_height="wrap_content"
+            app:show_last_next="false"
+            app:switch_choose="false"/>
 
 </LinearLayout>
