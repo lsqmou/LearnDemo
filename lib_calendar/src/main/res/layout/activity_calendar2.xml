@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:show_last_next="false"
-            app:switch_choose="false"/>
+            app:switch_choose="false"
+            app:solar_color="@android:color/holo_green_dark"/>
 
 </LinearLayout>

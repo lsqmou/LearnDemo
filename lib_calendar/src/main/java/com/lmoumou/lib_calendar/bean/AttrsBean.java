@@ -18,12 +18,21 @@ public class AttrsBean {
     private int colorSolarNormal = Color.parseColor("#9C9EA8");//阳历的日期颜色
     private int colorSolarSelect = Color.parseColor("#FFFFFF");//阳历日期选中的颜色
     private int colorChoose = Color.WHITE;//选中的日期文字颜色
+    private int colorSolar = Color.BLACK;//阳历的日期颜色
     private int sizeSolar = 14;//阳历日期文字尺寸
     private int dayBg = R.drawable.violet_circle;//选中的背景
     private int subscript = R.mipmap.ic_already_read;//下标
     private Map<String, String> specifyMap;//指定日期对应的文字map
     private int chooseType = 0;//0->单选,1->多选,2->范围选择
     private Map<String, ItemAttrsBeen> subscriptArray;//需要展示下标的集合
+
+    public int getColorSolar() {
+        return colorSolar;
+    }
+
+    public void setColorSolar(int colorSolar) {
+        this.colorSolar = colorSolar;
+    }
 
     public Map<String, ItemAttrsBeen> getSubscriptArray() {
         return subscriptArray;

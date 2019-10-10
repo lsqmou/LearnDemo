@@ -22,7 +22,7 @@ public class CalendarUtil {
      * @param month 当前月份
      * @return
      */
-    public static List<DateBean> getMonthDate(int year, int month, Map<String, ItemAttrsBeen> map) {
+    public static List<DateBean> getMonthDate(int year, int month, Map<String, ItemAttrsBeen> map, int normalColor) {
         List<DateBean> datas = new ArrayList<>();
         int week = SolarUtil.getFirstWeekOfMonth(year, month - 1);
 
@@ -50,21 +50,21 @@ public class CalendarUtil {
         }
 
         for (int i = 0; i < week; i++) {
-            datas.add(initDateBean(lastYear, lastMonth, lastMonthDays - week + 1 + i, 0, map));
+            datas.add(initDateBean(lastYear, lastMonth, lastMonthDays - week + 1 + i, 0, map, normalColor));
         }
 
         for (int i = 0; i < currentMonthDays; i++) {
-            datas.add(initDateBean(year, month, i + 1, 1, map));
+            datas.add(initDateBean(year, month, i + 1, 1, map, normalColor));
         }
 
         for (int i = 0; i < 7 * getMonthRows(year, month) - currentMonthDays - week; i++) {
-            datas.add(initDateBean(nextYear, nextMonth, i + 1, 2, map));
+            datas.add(initDateBean(nextYear, nextMonth, i + 1, 2, map, normalColor));
         }
 
         return datas;
     }
 
-    private static DateBean initDateBean(int year, int month, int day, int type, Map<String, ItemAttrsBeen> map) {
+    private static DateBean initDateBean(int year, int month, int day, int type, Map<String, ItemAttrsBeen> map, int normalColor) {
         DateBean dateBean = new DateBean();
         dateBean.setSolar(year, month, day);
 
@@ -86,7 +86,7 @@ public class CalendarUtil {
             } else {
                 dateBean.setSubscriptResId(0);
                 dateBean.setShowSubscript(false);
-                dateBean.setTextColorNormal(Color.parseColor("#9C9EA8"));
+                dateBean.setTextColorNormal(normalColor);
                 dateBean.setBgResId(R.drawable.item_bg_normal);
 //                dateBean.setLunar(new String[]{"", "", ""});
             }
@@ -104,7 +104,7 @@ public class CalendarUtil {
     }
 
     public static DateBean getDateBean(int year, int month, int day) {
-        return initDateBean(year, month, day, 1, null);
+        return initDateBean(year, month, day, 1, null, Color.parseColor("#9C9EA8"));
     }
 
     /**

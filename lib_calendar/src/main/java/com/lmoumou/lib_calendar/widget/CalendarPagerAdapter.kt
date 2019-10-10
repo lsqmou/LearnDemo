@@ -38,7 +38,7 @@ class CalendarPagerAdapter(private val count: Int) : PagerAdapter() {
         view.mAttrsBean= mAttrsBean
         view.setOnCalendarViewAdapter(item_layout, calendarViewAdapter)
         view.setDateList(
-            CalendarUtil.getMonthDate(date[0], date[1], mAttrsBean.subscriptArray),
+            CalendarUtil.getMonthDate(date[0], date[1], mAttrsBean.subscriptArray,mAttrsBean.colorSolar),
             SolarUtil.getMonthDays(date[0], date[1])
         )
         mViews.put(position, view)

@@ -42,7 +42,7 @@ class CalendarView : ViewPager {
 //                    R.styleable.CalendarView_show_holiday -> mAttrsBean.setShowHoliday(ta.getBoolean(attr, true))
 //                    R.styleable.CalendarView_show_term -> mAttrsBean.setShowTerm(ta.getBoolean(attr, true))
                     R.styleable.CalendarView_switch_choose -> mAttrsBean.isSwitchChoose = ta.getBoolean(attr, true)
-//                    R.styleable.CalendarView_solar_color -> mAttrsBean.setColorSolar(ta.getColor(attr, mAttrsBean.getColorSolar()))
+                    R.styleable.CalendarView_solar_color -> mAttrsBean.colorSolar = ta.getColor(attr, mAttrsBean.colorSolar)
 //                    R.styleable.CalendarView_solar_size -> mAttrsBean.sizeSolar = CalendarUtil.getTextSize(context, ta.getInteger(attr, mAttrsBean.sizeSolar))
 //                    R.styleable.CalendarView_lunar_color -> mAttrsBean.setColorLunar(ta.getColor(attr, mAttrsBean.getColorLunar()))
 //                    R.styleable.CalendarView_lunar_size -> mAttrsBean.setSizeLunar(
