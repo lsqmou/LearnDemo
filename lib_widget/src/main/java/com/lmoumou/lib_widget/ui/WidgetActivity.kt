@@ -48,6 +48,8 @@ class WidgetActivity : AppCompatActivity() {
                             1 -> RecyclerViewItemDecorationActivity.startThis(this@WidgetActivity)
                             2 -> RecyclerViewDragActivity.startThis(this@WidgetActivity)
                             3->CalendarActivity.startThis(this@WidgetActivity)
+                            4->SlideActivity.startThis(this@WidgetActivity)
+                            5->TemperatureActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -64,5 +66,7 @@ class WidgetActivity : AppCompatActivity() {
         dataList.add("RecyclerView分割线")
         dataList.add("RecyclerView拖动")
         dataList.add("日历")
+        dataList.add("左右滑动")
+        dataList.add("体温折线图")
     }
 }

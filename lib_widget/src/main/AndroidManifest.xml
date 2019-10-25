@@ -18,6 +18,11 @@
         <activity android:name=".ui.CalendarActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.SlideActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.TemperatureActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 
