@@ -23,6 +23,9 @@
         <activity android:name=".ui.TemperatureActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.ShockCircleActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 

@@ -75,8 +75,6 @@ class TemperatureView : View {
         viewW = cellX * line
         viewH = cellY * row
 
-        mTempScale = viewW / cellX / 2
-
         rowPoints.add(0F)
         rowPoints.add(0F + cellLine / 2)
         rowPoints.add(viewW.toFloat())
@@ -125,30 +123,21 @@ class TemperatureView : View {
         }
     }
 
-    private var mScrollLastX = 0
-    private var mCountScale: Int = line + 1 //滑动的总刻度
-    private var mTempScale: Int = 0 // 用于判断滑动方向
+    private var initialX = 0F
+    private var downX = 0f
+
+
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) return super.onTouchEvent(event)
-        val x = event.x.toInt()
         return when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                if (!mScroller.isFinished) {
-                    mScroller.abortAnimation()
-                }
-                mScrollLastX = x
+                initialX = x
+                downX = event.x
                 true
             }
             MotionEvent.ACTION_MOVE -> {
-                val dataX = mScrollLastX - x
-                if (mCountScale - mTempScale < 0) {//向右滑动
-
-                } else if (mCountScale - mTempScale < 0) {//向左滑动
-
-                }
-//                mScroller.startScroll(mScroller.finalX, mScroller.finalY, dataX, 0)
-//                postInvalidate()
-                this.scrollTo(dataX,0)
+                val dataX = initialX + event.x - downX
+                this.scrollTo(-dataX.toInt(), 0)
                 true
             }
             else -> {
@@ -156,13 +145,4 @@ class TemperatureView : View {
             }
         }
     }
-
-    override fun computeScroll() {
-        super.computeScroll()
-        if (mScroller.computeScrollOffset()) {
-            scrollTo(mScroller.currX, mScroller.currY)
-//            invalidate()
-        }
-    }
-
 }

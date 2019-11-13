@@ -5,11 +5,6 @@
               android:layout_height="match_parent"
               android:gravity="center">
 
-    <TextView android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textIsSelectable="true"
-              android:text="。六级考试的话v分手的v快乐女声的vi你是拉萨看得见女厕所的v那就是的考虑呢"/>
-
     <com.lmoumou.lib_widget.widget.TemperatureView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
