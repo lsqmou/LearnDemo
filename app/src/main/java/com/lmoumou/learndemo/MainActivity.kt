@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lmoumou.lib_widget.ui.WidgetActivity
 import com.lmoumou.lib_calendar.CalendarActivity2
+import com.lmoumou.lib_widget.ui.WidgetActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_main.view.*
 
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                             1 -> {
                                 CalendarActivity2.startThis(this@MainActivity)
                             }
+                            2 -> RichTextActivity.startThis(this@MainActivity)
                         }
                     }
                 }
@@ -55,5 +56,6 @@ class MainActivity : AppCompatActivity() {
     private fun initData() {
         dataList.add("自定义View")
         dataList.add("日历2222")
+        dataList.add("富文本")
     }
 }
