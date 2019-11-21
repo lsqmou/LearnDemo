@@ -47,10 +47,11 @@ class WidgetActivity : AppCompatActivity() {
                             0 -> DoubleWaveActivity.startThis(this@WidgetActivity)
                             1 -> RecyclerViewItemDecorationActivity.startThis(this@WidgetActivity)
                             2 -> RecyclerViewDragActivity.startThis(this@WidgetActivity)
-                            3->CalendarActivity.startThis(this@WidgetActivity)
-                            4->SlideActivity.startThis(this@WidgetActivity)
-                            5->TemperatureActivity.startThis(this@WidgetActivity)
-                            6-> ShockCircleActivity.startThis(this@WidgetActivity)
+                            3 -> CalendarActivity.startThis(this@WidgetActivity)
+                            4 -> SlideActivity.startThis(this@WidgetActivity)
+                            5 -> TemperatureActivity.startThis(this@WidgetActivity)
+                            6 -> ShockCircleActivity.startThis(this@WidgetActivity)
+                            7 -> DashboardActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -70,5 +71,6 @@ class WidgetActivity : AppCompatActivity() {
         dataList.add("左右滑动")
         dataList.add("体温折线图")
         dataList.add("震动圆")
+        dataList.add("仪表盘")
     }
 }

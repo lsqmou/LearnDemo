@@ -25,5 +25,7 @@ class ShockCircleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_shock_circle)
 
         mShockCircleView.startAnimation()
+
+        mShockEllipseView.startAnimator()
     }
 }

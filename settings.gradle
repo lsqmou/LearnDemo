@@ -1,1 +1,1 @@
-include ':app', ':lib_widget', ':lib_calendar'
+include ':app', ':lib_widget', ':lib_calendar', ':lib_pdf'

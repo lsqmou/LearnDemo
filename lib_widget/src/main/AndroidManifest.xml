@@ -26,6 +26,9 @@
         <activity android:name=".ui.ShockCircleActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.DashboardActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 

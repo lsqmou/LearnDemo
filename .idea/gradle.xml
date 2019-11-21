@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib_calendar" />
+            <option value="$PROJECT_DIR$/lib_pdf" />
             <option value="$PROJECT_DIR$/lib_widget" />
           </set>
         </option>
