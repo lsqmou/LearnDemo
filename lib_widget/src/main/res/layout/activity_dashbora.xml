@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal">
 
     <com.lmoumou.lib_widget.widget.DashboardView
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"/>
 
     <com.lmoumou.lib_widget.widget.DiskView
-
+            android:layout_marginTop="50dp"
             android:background="@android:color/holo_green_light"
-
-            android:layout_width="300dp"
-            android:layout_height="300dp"/>
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
