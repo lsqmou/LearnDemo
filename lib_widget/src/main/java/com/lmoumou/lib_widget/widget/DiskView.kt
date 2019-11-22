@@ -38,9 +38,9 @@ class DiskView : View {
     //指针路径
     private val pointerPath by lazy { Path() }
 
-    private val dataList: MutableList<DiskIm> by lazy {
-        mutableListOf<DiskIm>(
-            DiaskBeen("01"),
+    private val dataList: MutableList<DiaskBeen> by lazy {
+        mutableListOf<DiaskBeen>(
+            DiaskBeen("01", true),
             DiaskBeen("02"),
             DiaskBeen("03"),
             DiaskBeen("04"),
@@ -54,7 +54,7 @@ class DiskView : View {
             DiaskBeen("12"),
             DiaskBeen("13"),
             DiaskBeen("14"),
-            DiaskBeen("15",true),
+            DiaskBeen("15"),
             DiaskBeen("16"),
             DiaskBeen("17"),
             DiaskBeen("18"),
@@ -110,10 +110,11 @@ class DiskView : View {
     }
 
     private val innerArcRectF by lazy { RectF() }
+    private val outerArcRectF by lazy { RectF() }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         mRectF.set(0F, 0F, width.toFloat(), height.toFloat())
-
+        outerArcRectF.set(0F, 0F, width.toFloat(), height.toFloat())
         arcRectF.set(
             0F + arcPaint.strokeWidth / 2,
             0F + arcPaint.strokeWidth / 2,
@@ -141,7 +142,7 @@ class DiskView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-
+            canvasCopy = it
             //画外圈刻度盘
             drawDial(it)
 
@@ -194,8 +195,20 @@ class DiskView : View {
         }
     }
 
+    private val testPath by lazy {
+        Paint().apply {
+            color = Color.GREEN
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+            strokeWidth = 3F
+        }
+    }
 
     private val regions by lazy { mutableListOf<Region>() }
+
+    private val testRectF by lazy { RectF() }
+
+    private val areaPath by lazy { Path() }
 
     private val innerRegion by lazy { Region() } //外圆弧区域
 
@@ -235,7 +248,6 @@ class DiskView : View {
         )
 
         arcRegion.op(innerRegion, Region.Op.XOR)
-
         regions.clear()
         for (i in 0 until dataList.size) {
             val diskIm = dataList[i]
@@ -248,27 +260,49 @@ class DiskView : View {
                 canvas.drawPath(arcPath, mPaint)
             }
 
-            arcPath.reset()
-            arcPath.addArc(arcRectF, currentDegree + 180 - averageAngle / 2, averageAngle)
-            arcPath.computeBounds(mRectF, true)
-
-            val region = Region()
-            region.setPath(
-                arcPath,
-                Region(mRectF.left.toInt(), mRectF.top.toInt(), mRectF.right.toInt(), mRectF.bottom.toInt())
-            )
-//            canvas.drawRect(region.bounds,mPaint)
-//            canvas.drawPath(arcPath, mPaint)
-
-
-            regions.add(region)
-
-
             val textRadius = arcRectF.width() / 2
             val x = arcRectF.centerX() - textRadius * Math.cos(Math.toRadians(currentDegree.toDouble()))
             val y = arcRectF.centerY() - textRadius * Math.sin(Math.toRadians(currentDegree.toDouble()))
 
-            if (diskIm.isShowContent()) {
+            val outerRadius = width / 2
+            val degree1 = currentDegree - averageAngle / 2
+            val degree2 = currentDegree + averageAngle / 2
+            val aX: Float = (arcRectF.centerX() - outerRadius * Math.cos(Math.toRadians(degree1.toDouble()))).toFloat()
+            val aY: Float = (arcRectF.centerY() - outerRadius * Math.sin(Math.toRadians(degree1.toDouble()))).toFloat()
+
+            val bX: Float = (arcRectF.centerX() - outerRadius * Math.cos(Math.toRadians(degree2.toDouble()))).toFloat()
+            val bY: Float = (arcRectF.centerY() - outerRadius * Math.sin(Math.toRadians(degree2.toDouble()))).toFloat()
+
+            val innerRadius = width / 2 - arcPaint.strokeWidth
+            val cX: Float = (arcRectF.centerX() - innerRadius * Math.cos(Math.toRadians(degree2.toDouble()))).toFloat()
+            val cY: Float = (arcRectF.centerY() - innerRadius * Math.sin(Math.toRadians(degree2.toDouble()))).toFloat()
+
+            val dX: Float = (arcRectF.centerX() - innerRadius * Math.cos(Math.toRadians(degree1.toDouble()))).toFloat()
+            val dY: Float = (arcRectF.centerY() - innerRadius * Math.sin(Math.toRadians(degree1.toDouble()))).toFloat()
+
+            areaPath.reset()
+            areaPath.moveTo(aX, aY)
+            areaPath.addArc(outerArcRectF, degree1 + 180, averageAngle)
+            areaPath.lineTo(cX, cY)
+            areaPath.moveTo(aX, aY)
+            areaPath.lineTo(dX, dY)
+            areaPath.addArc(innerArcRectF, degree1 + 180, averageAngle)
+            areaPath.close()
+            areaPath.computeBounds(testRectF, true)
+            val region = Region()
+            region.setPath(
+                areaPath, Region(
+                    testRectF.left.toInt(),
+                    testRectF.top.toInt(),
+                    testRectF.right.toInt(),
+                    testRectF.bottom.toInt()
+                )
+            )
+            regions.add(region)
+            canvas.drawPath(areaPath, testPath)
+//            canvas.drawRect(region.bounds, testPath)
+
+            if (diskIm.isShowContent()||diskIm.isSelect) {
                 textPaint.getTextBounds(diskIm.getContent(), 0, diskIm.getContent().length, textRect)
                 canvas.drawText(
                     diskIm.getContent(),
@@ -330,14 +364,13 @@ class DiskView : View {
             MotionEvent.ACTION_DOWN -> {
                 downX = event.x
                 downY = event.y
-                pointToPosition(downX, downX)
                 judgeArea(downX, downY)
             }
             MotionEvent.ACTION_UP -> {
                 val upX = event.x
                 val upY = event.y
 
-                pointToPosition(upX, upY)
+                pointToPosition(downX, downY)
 
                 judgeArea(upX, upY)
             }
@@ -360,6 +393,7 @@ class DiskView : View {
         return result
     }
 
+    private lateinit var canvasCopy: Canvas
     /**
      * 根据点获取对应的位置
      *
@@ -368,10 +402,14 @@ class DiskView : View {
      * */
     private fun pointToPosition(x: Float, y: Float) {
         regions.forEachIndexed { index, region ->
+            dataList[index].isSelect=false
             if (region.contains(x.toInt(), y.toInt())) {
-                Log.e(TAG, "index->$index")
+                Log.e(TAG,"index->$index")
+                dataList[index].isSelect=true
             }
         }
+
+        invalidate()
     }
 
 
