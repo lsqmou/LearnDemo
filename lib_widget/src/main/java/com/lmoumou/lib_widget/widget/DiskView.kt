@@ -253,7 +253,7 @@ class DiskView : View {
             val diskIm = dataList[i]
 
             val currentDegree = 110 + averageAngle * i + averageAngle / 2
-            if (diskIm.isCurrent()) {
+            if (diskIm.isSelect) {
                 degree = 110 + averageAngle * i + averageAngle / 2
                 arcPath.reset()
                 arcPath.addArc(arcRectF, degree + 180 - averageAngle / 2, averageAngle)
@@ -302,10 +302,10 @@ class DiskView : View {
             canvas.drawPath(areaPath, testPath)
 //            canvas.drawRect(region.bounds, testPath)
 
-            if (diskIm.isShowContent()||diskIm.isSelect) {
-                textPaint.getTextBounds(diskIm.getContent(), 0, diskIm.getContent().length, textRect)
+            if (diskIm.isShowContentStr||diskIm.isSelect) {
+                textPaint.getTextBounds(diskIm.contentStr, 0, diskIm.contentStr.length, textRect)
                 canvas.drawText(
-                    diskIm.getContent(),
+                    diskIm.contentStr,
                     x.toFloat(),
                     y.toFloat() + textRect.height() / 2,
                     textPaint

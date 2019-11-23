@@ -6,14 +6,13 @@
               android:gravity="center_horizontal">
 
     <com.lmoumou.lib_widget.widget.DashboardView
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content"/>
+            android:layout_width="300dp"
+            android:layout_height="300dp"/>
 
     <com.lmoumou.lib_widget.widget.DiskView
             android:layout_marginTop="50dp"
             android:background="@android:color/holo_green_light"
-            android:layout_width="350dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"/>
 
 </LinearLayout>
