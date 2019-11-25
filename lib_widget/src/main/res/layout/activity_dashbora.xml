@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -10,9 +11,14 @@
             android:layout_height="300dp"/>
 
     <com.lmoumou.lib_widget.widget.DiskView
+            android:id="@+id/mDiskView"
             android:layout_marginTop="50dp"
             android:background="@android:color/holo_green_light"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:dv_pointer_color="@android:color/white"
+            app:dv_scale_color="@android:color/white"
+            app:dv_text_size_normal="15sp"
+            app:dv_text_size_select="15sp"/>
 
 </LinearLayout>

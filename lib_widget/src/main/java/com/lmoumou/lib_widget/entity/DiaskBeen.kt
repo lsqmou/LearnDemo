@@ -1,8 +1,6 @@
 package com.lmoumou.lib_widget.entity
 
-import android.graphics.Path
-import android.graphics.RectF
-import android.graphics.Region
+import android.graphics.Color
 
 /**
  * @author Lmoumou
@@ -10,27 +8,24 @@ import android.graphics.Region
  */
 data class DiaskBeen(
     var contentStr: String = "",
-    var isSelect: Boolean = false,
-    var isShowContentStr: Boolean = true
-) {
+    var stage: Int = 0,//1->安全期，2->月经期，3->预测月经期，4->排卵期
+    var isSelect: Boolean = false
+) : DiskIm {
+    override fun isCurrent(): Boolean = isSelect
 
-    private val rectF by lazy { RectF() }
-    private val region: Region = Region()
-
-    fun setRegin(path: Path) {
-        path.computeBounds(rectF, true)
-        region.setPath(
-            path, Region(
-                rectF.left.toInt(),
-                rectF.top.toInt(),
-                rectF.right.toInt(),
-                rectF.bottom.toInt()
-            )
-        )
+    override fun setCurrent(b: Boolean) {
+        this.isSelect = b
     }
 
-    fun isRegion(x: Int, y: Int): Boolean {
-        return region.contains(x, y)
-    }
+    override fun getContent(): String = contentStr
 
+    override fun getSatus(): Int = stage
+
+    override fun getColor(): Int {
+        return when (stage) {
+            2 -> Color.parseColor("#FE7E6D")
+            4 -> Color.parseColor("#A4A8FF")
+            else -> Color.parseColor("#59E8D8")
+        }
+    }
 }

@@ -1,12 +1,13 @@
 package com.lmoumou.lib_widget.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.lmoumou.lib_widget.R
 import com.lmoumou.lib_widget.entity.DiaskBeen
 import com.lmoumou.lib_widget.entity.DiskIm
 
@@ -23,11 +24,30 @@ class DiskView : View {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int?) : super(context, attrs) {
-
         averageAngle = sweepAngle / (dataList.size)
-    }
 
-    private val mRectF by lazy { RectF() }
+        attrs?.let {
+            val ta = context.obtainStyledAttributes(it, R.styleable.DiskView)
+            for (i in 0 until ta.indexCount) {
+                val attr = ta.getIndex(i)
+                when (attr) {
+                    R.styleable.DiskView_dv_pointer_color -> {
+                        pointPaint.color = ta.getColor(attr, Color.WHITE)
+                    }
+                    R.styleable.DiskView_dv_scale_color -> {
+                        scaleColor = ta.getColor(attr, Color.BLUE)
+                    }
+                    R.styleable.DiskView_dv_text_size_normal -> {
+                        textSizeNormal = ta.getDimension(attr, 13F)
+                    }
+                    R.styleable.DiskView_dv_text_size_select -> {
+                        textSizeSelect = ta.getDimension(attr, 13F)
+                    }
+                }
+            }
+        }
+
+    }
 
     //外刻度盘
     private val arcRectF by lazy { RectF() }
@@ -38,17 +58,17 @@ class DiskView : View {
     //指针路径
     private val pointerPath by lazy { Path() }
 
-    private val dataList: MutableList<DiaskBeen> by lazy {
-        mutableListOf<DiaskBeen>(
-            DiaskBeen("01", true),
+    private val dataList: MutableList<DiskIm> by lazy {
+        mutableListOf<DiskIm>(
+            DiaskBeen("01", isSelect = true),
             DiaskBeen("02"),
             DiaskBeen("03"),
             DiaskBeen("04"),
             DiaskBeen("05"),
-            DiaskBeen("06", isShowContentStr = false),
-            DiaskBeen("07", isShowContentStr = false),
-            DiaskBeen("08", isShowContentStr = false),
-            DiaskBeen("09", isShowContentStr = false),
+            DiaskBeen("06"),
+            DiaskBeen("07"),
+            DiaskBeen("08"),
+            DiaskBeen("09"),
             DiaskBeen("10"),
             DiaskBeen("11"),
             DiaskBeen("12"),
@@ -59,17 +79,17 @@ class DiskView : View {
             DiaskBeen("17"),
             DiaskBeen("18"),
             DiaskBeen("19"),
-            DiaskBeen("20", isShowContentStr = false),
-            DiaskBeen("21", isShowContentStr = false),
-            DiaskBeen("22", isShowContentStr = false),
-            DiaskBeen("23", isShowContentStr = false),
-            DiaskBeen("24", isShowContentStr = false),
-            DiaskBeen("25", isShowContentStr = false),
-            DiaskBeen("26", isShowContentStr = false),
-            DiaskBeen("27", isShowContentStr = false),
-            DiaskBeen("28", isShowContentStr = false),
-            DiaskBeen("29", isShowContentStr = false),
-            DiaskBeen("30", isShowContentStr = false)
+            DiaskBeen("20"),
+            DiaskBeen("21"),
+            DiaskBeen("22"),
+            DiaskBeen("23"),
+            DiaskBeen("24"),
+            DiaskBeen("25"),
+            DiaskBeen("26"),
+            DiaskBeen("27"),
+            DiaskBeen("28"),
+            DiaskBeen("29"),
+            DiaskBeen("30")
         )
     }
 
@@ -113,23 +133,22 @@ class DiskView : View {
     private val outerArcRectF by lazy { RectF() }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        mRectF.set(0F, 0F, width.toFloat(), height.toFloat())
-        outerArcRectF.set(0F, 0F, width.toFloat(), height.toFloat())
+        outerArcRectF.set(0F + 20, 0F + 20, width.toFloat() - 20, height.toFloat() - 20)
         arcRectF.set(
-            0F + arcPaint.strokeWidth / 2,
-            0F + arcPaint.strokeWidth / 2,
-            width.toFloat() - arcPaint.strokeWidth / 2,
-            height.toFloat() - arcPaint.strokeWidth / 2
+            0F + arcPaint.strokeWidth / 2 + 20,
+            0F + arcPaint.strokeWidth / 2 + 20,
+            width.toFloat() - arcPaint.strokeWidth / 2 - 20,
+            height.toFloat() - arcPaint.strokeWidth / 2 - 20
         )
 
         innerArcRectF.set(
-            arcPaint.strokeWidth,
-            arcPaint.strokeWidth,
-            width - arcPaint.strokeWidth,
-            height - arcPaint.strokeWidth
+            arcPaint.strokeWidth + 20,
+            arcPaint.strokeWidth + 20,
+            width - arcPaint.strokeWidth - 20,
+            height - arcPaint.strokeWidth - 20
         )
 
-        val dfValue = arcPaint.strokeWidth + 20
+        val dfValue = arcPaint.strokeWidth + 20 + 20
         pointerRectF.set(0 + dfValue, 0 + dfValue, width - dfValue, height - dfValue)
 
         val x = sideLength / 2
@@ -142,7 +161,6 @@ class DiskView : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            canvasCopy = it
             //画外圈刻度盘
             drawDial(it)
 
@@ -151,9 +169,10 @@ class DiskView : View {
         }
     }
 
+    private var scaleColor = Color.WHITE
     private val arcPaint by lazy {
         Paint().apply {
-            color = Color.RED
+            color = scaleColor
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = width / 8F
@@ -161,9 +180,20 @@ class DiskView : View {
         }
     }
 
+    private val arcPaint2 by lazy {
+        Paint().apply {
+            color = Color.GRAY
+            isAntiAlias = true
+            style = Paint.Style.STROKE
+            strokeWidth = width / 8F
+            strokeCap = Paint.Cap.ROUND
+            maskFilter = BlurMaskFilter(20F, BlurMaskFilter.Blur.SOLID)
+        }
+    }
+
     private val mPaint by lazy {
         Paint().apply {
-            color = Color.parseColor("#80FFFFFF")
+            color = Color.BLUE
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = width / 8F
@@ -179,23 +209,37 @@ class DiskView : View {
             style = Paint.Style.FILL
             strokeWidth = 1F
             strokeCap = Paint.Cap.SQUARE
+//            maskFilter = BlurMaskFilter(20F, BlurMaskFilter.Blur.SOLID)
         }
     }
 
+    private val pointPaint2 by lazy {
+        Paint().apply {
+            color = Color.GRAY
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            strokeWidth = 1F
+            strokeCap = Paint.Cap.SQUARE
+            maskFilter = BlurMaskFilter(20F, BlurMaskFilter.Blur.SOLID)
+        }
+    }
 
     private val startAngle = 290F
     private val sweepAngle = 320F
 
+    private var textSizeNormal = 45F
+    private var textSizeSelect = 45F
+
     private val textPaint by lazy {
         TextPaint().apply {
-            color = Color.YELLOW
-            textSize = 45F
+            color = Color.BLACK
+            textSize = textSizeNormal
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
         }
     }
 
-    private val testPath by lazy {
+    private val testPaint by lazy {
         Paint().apply {
             color = Color.GREEN
             style = Paint.Style.STROKE
@@ -206,57 +250,29 @@ class DiskView : View {
 
     private val regions by lazy { mutableListOf<Region>() }
 
-    private val testRectF by lazy { RectF() }
+    private val regionRectF by lazy { RectF() }
 
     private val areaPath by lazy { Path() }
 
-    private val innerRegion by lazy { Region() } //外圆弧区域
-
-    private val arcRegion by lazy { Region() } //外圆弧区域
     private val arcPath by lazy { Path() }
     private val textRect by lazy { Rect() }
     private fun drawDial(canvas: Canvas) {
         arcPath.reset()
-        arcRegion.setEmpty()
         arcPath.addArc(arcRectF, startAngle, sweepAngle)
-
+        canvas.drawPath(arcPath, arcPaint2)
         canvas.drawPath(arcPath, arcPaint)
 
-        //获取外圆弧区域
-        arcPath.reset()
-        arcPath.addArc(mRectF, startAngle, sweepAngle)
-        arcPath.computeBounds(mRectF, true)
-        arcRegion.setPath(
-            arcPath, Region(
-                mRectF.left.toInt(), mRectF.top.toInt(), mRectF.right.toInt(),
-                mRectF.bottom.toInt()
-            )
-        )
-
-        //获取内圆弧区域
-        arcPath.reset()
-        arcPath.addArc(innerArcRectF, startAngle, sweepAngle)
-        arcPath.computeBounds(mRectF, true)
-        innerRegion.setPath(
-            arcPath,
-            Region(
-                innerArcRectF.left.toInt(),
-                innerArcRectF.top.toInt(),
-                innerArcRectF.right.toInt(),
-                innerArcRectF.bottom.toInt()
-            )
-        )
-
-        arcRegion.op(innerRegion, Region.Op.XOR)
         regions.clear()
         for (i in 0 until dataList.size) {
             val diskIm = dataList[i]
 
             val currentDegree = 110 + averageAngle * i + averageAngle / 2
-            if (diskIm.isSelect) {
+            if (diskIm.isCurrent()) {
                 degree = 110 + averageAngle * i + averageAngle / 2
                 arcPath.reset()
                 arcPath.addArc(arcRectF, degree + 180 - averageAngle / 2, averageAngle)
+                mPaint.color = diskIm.getColor()
+                mPaint.alpha = 80
                 canvas.drawPath(arcPath, mPaint)
             }
 
@@ -264,55 +280,55 @@ class DiskView : View {
             val x = arcRectF.centerX() - textRadius * Math.cos(Math.toRadians(currentDegree.toDouble()))
             val y = arcRectF.centerY() - textRadius * Math.sin(Math.toRadians(currentDegree.toDouble()))
 
-            val outerRadius = width / 2
+            val outerRadius = outerArcRectF.width() / 2
             val degree1 = currentDegree - averageAngle / 2
             val degree2 = currentDegree + averageAngle / 2
             val aX: Float = (arcRectF.centerX() - outerRadius * Math.cos(Math.toRadians(degree1.toDouble()))).toFloat()
             val aY: Float = (arcRectF.centerY() - outerRadius * Math.sin(Math.toRadians(degree1.toDouble()))).toFloat()
 
-            val bX: Float = (arcRectF.centerX() - outerRadius * Math.cos(Math.toRadians(degree2.toDouble()))).toFloat()
-            val bY: Float = (arcRectF.centerY() - outerRadius * Math.sin(Math.toRadians(degree2.toDouble()))).toFloat()
+//            val bX: Float = (arcRectF.centerX() - outerRadius * Math.cos(Math.toRadians(degree2.toDouble()))).toFloat()
+//            val bY: Float = (arcRectF.centerY() - outerRadius * Math.sin(Math.toRadians(degree2.toDouble()))).toFloat()
 
-            val innerRadius = width / 2 - arcPaint.strokeWidth
+            val innerRadius = innerArcRectF.width() / 2
             val cX: Float = (arcRectF.centerX() - innerRadius * Math.cos(Math.toRadians(degree2.toDouble()))).toFloat()
             val cY: Float = (arcRectF.centerY() - innerRadius * Math.sin(Math.toRadians(degree2.toDouble()))).toFloat()
 
-            val dX: Float = (arcRectF.centerX() - innerRadius * Math.cos(Math.toRadians(degree1.toDouble()))).toFloat()
-            val dY: Float = (arcRectF.centerY() - innerRadius * Math.sin(Math.toRadians(degree1.toDouble()))).toFloat()
+//            val dX: Float = (arcRectF.centerX() - innerRadius * Math.cos(Math.toRadians(degree1.toDouble()))).toFloat()
+//            val dY: Float = (arcRectF.centerY() - innerRadius * Math.sin(Math.toRadians(degree1.toDouble()))).toFloat()
 
             areaPath.reset()
             areaPath.moveTo(aX, aY)
             areaPath.addArc(outerArcRectF, degree1 + 180, averageAngle)
             areaPath.lineTo(cX, cY)
-            areaPath.moveTo(aX, aY)
-            areaPath.lineTo(dX, dY)
-            areaPath.addArc(innerArcRectF, degree1 + 180, averageAngle)
-            areaPath.close()
-            areaPath.computeBounds(testRectF, true)
+            areaPath.addArc(innerArcRectF, degree2 + 180, -averageAngle)
+            areaPath.lineTo(aX, aY)
+            areaPath.computeBounds(regionRectF, true)
+
+
             val region = Region()
             region.setPath(
                 areaPath, Region(
-                    testRectF.left.toInt(),
-                    testRectF.top.toInt(),
-                    testRectF.right.toInt(),
-                    testRectF.bottom.toInt()
+                    regionRectF.left.toInt(),
+                    regionRectF.top.toInt(),
+                    regionRectF.right.toInt(),
+                    regionRectF.bottom.toInt()
                 )
             )
             regions.add(region)
-            canvas.drawPath(areaPath, testPath)
-//            canvas.drawRect(region.bounds, testPath)
+//            canvas.drawPath(areaPath, testPaint)
 
-            if (diskIm.isShowContentStr||diskIm.isSelect) {
-                textPaint.getTextBounds(diskIm.contentStr, 0, diskIm.contentStr.length, textRect)
-                canvas.drawText(
-                    diskIm.contentStr,
-                    x.toFloat(),
-                    y.toFloat() + textRect.height() / 2,
-                    textPaint
-                )
-            } else {
-                canvas.drawCircle(x.toFloat(), y.toFloat(), 15F, pointPaint)
-            }
+            textPaint.textSize = if (diskIm.isCurrent()) textSizeSelect else textSizeNormal
+            textPaint.color = diskIm.getColor()
+
+            textPaint.getTextBounds(diskIm.getContent(), 0, diskIm.getContent().length, textRect)
+
+            canvas.drawText(
+                diskIm.getContent(),
+                x.toFloat(),
+                y.toFloat() + textRect.height() / 2,
+                textPaint
+            )
+
         }
     }
 
@@ -327,9 +343,6 @@ class DiskView : View {
 
     private fun drawPointer(canvas: Canvas) {
         pointerPath.reset()
-
-
-        canvas.drawCircle(arcRectF.centerX(), arcRectF.centerY(), radius, pointPaint)
 
         val t = Math.toDegrees(Math.asin((sideLength / 2 / radius).toDouble()))
 
@@ -352,27 +365,28 @@ class DiskView : View {
         pointerPath.lineTo(point2X, point2Y)
         pointerPath.lineTo(point3X, point3Y)
         pointerPath.close()
+
+        canvas.drawCircle(arcRectF.centerX(), arcRectF.centerY(), radius, pointPaint2)
+        canvas.drawPath(pointerPath, pointPaint2)
+        canvas.drawCircle(arcRectF.centerX(), arcRectF.centerY(), radius, pointPaint)
         canvas.drawPath(pointerPath, pointPaint)
     }
 
     private var downX = 0f
     private var downY = 0f
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event == null) return super.onTouchEvent(event)
         return when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 downX = event.x
                 downY = event.y
-                judgeArea(downX, downY)
+                pointToPosition(downX, downY)
+                super.onTouchEvent(event)
             }
             MotionEvent.ACTION_UP -> {
-                val upX = event.x
-                val upY = event.y
-
-                pointToPosition(downX, downY)
-
-                judgeArea(upX, upY)
+                super.onTouchEvent(event)
             }
             else -> {
                 super.onTouchEvent(event)
@@ -380,20 +394,7 @@ class DiskView : View {
         }
     }
 
-    /**
-     * 判断点击点是否在外圆弧区域
-     *
-     * @param x
-     * @param y
-     * */
-    private fun judgeArea(x: Float, y: Float): Boolean {
-        var result = false
-        result = arcRegion.contains(x.toInt(), y.toInt())
-//        Log.e(TAG, "result->${result}")
-        return result
-    }
-
-    private lateinit var canvasCopy: Canvas
+    private var lastIndex = 0
     /**
      * 根据点获取对应的位置
      *
@@ -402,15 +403,30 @@ class DiskView : View {
      * */
     private fun pointToPosition(x: Float, y: Float) {
         regions.forEachIndexed { index, region ->
-            dataList[index].isSelect=false
-            if (region.contains(x.toInt(), y.toInt())) {
-                Log.e(TAG,"index->$index")
-                dataList[index].isSelect=true
+            if (dataList[index].isCurrent()) {
+                lastIndex = index
             }
+            dataList[index].setCurrent(false)
+            if (region.contains(x.toInt(), y.toInt())) {
+                dataList[index].setCurrent(true)
+            }
+        }
+
+        if (dataList.isNotEmpty() && dataList.none { it.isCurrent() }) {
+            dataList[lastIndex].setCurrent(true)
         }
 
         invalidate()
     }
 
+    /**
+     * 设置数据
+     * */
+    fun setData(data: MutableList<out DiskIm>) {
+        dataList.clear()
+        dataList.addAll(data)
+        averageAngle = sweepAngle / (dataList.size)
+        invalidate()
+    }
 
 }

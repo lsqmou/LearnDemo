@@ -10,6 +10,10 @@ interface DiskIm {
 
     fun getContent(): String
 
-    fun isShowContent(): Boolean
+    fun getSatus():Int
+
+    fun getColor():Int
+
+    fun setCurrent(b:Boolean)
 
 }

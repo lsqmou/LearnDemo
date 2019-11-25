@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DiskView">
+        <!--指针颜色-->
+        <attr name="dv_pointer_color" format="color"/>
+        <!--刻度盘颜色-->
+        <attr name="dv_scale_color" format="color"/>
+        <!--文本正常大小-->
+        <attr name="dv_text_size_normal" format="dimension"/>
+        <!--文本选中大小-->
+        <attr name="dv_text_size_select" format="dimension"/>
+    </declare-styleable>
+
+</resources>
