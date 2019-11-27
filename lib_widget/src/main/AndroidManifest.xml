@@ -29,6 +29,9 @@
         <activity android:name=".ui.DashboardActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.RuleActivity"
+                  android:screenOrientation="portrait"/>
+
     </application>
 
 
