@@ -6,9 +6,11 @@
 
 
     <com.lmoumou.lib_widget.widget.rule.RuleView
-            android:background="@android:color/holo_orange_light"
+            android:id="@+id/mRuleView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"/>
 
 
 </LinearLayout>

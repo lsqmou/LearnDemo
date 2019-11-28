@@ -2,7 +2,7 @@ package com.lmoumou.lib_widget.widget.rule
 
 import android.content.Context
 import android.os.Handler
-import android.os.Message
+import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.Scroller
@@ -20,12 +20,14 @@ class RuleScroller(private val context: Context, private val listener: Scrolling
 
         const val MESSAGE_SCROLL = 0
         const val MESSAGE_JUSTIFY = 1
+
+        private const val DISTANCE_MINE = 10f
     }
 
     /**
      * 动画处理handler
      */
-    private lateinit var animationHandler:Handler
+    private lateinit var animationHandler: Handler
 
     init {
         animationHandler = Handler(Handler.Callback { msg ->
@@ -57,6 +59,7 @@ class RuleScroller(private val context: Context, private val listener: Scrolling
 
     //上次触摸点
     private var lastTouchedX: Float = 0F
+    private var mDownTouchX:Float=0F
 
     private var isScrollingPerformed: Boolean = false
 
@@ -97,15 +100,27 @@ class RuleScroller(private val context: Context, private val listener: Scrolling
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 lastTouchedX = event.x
+                mDownTouchX=event.x
                 scroller.forceFinished(true)
                 clearMessages()
             }
             MotionEvent.ACTION_MOVE -> {
                 val distanceX = (event.x - lastTouchedX).toInt()
-                if (distanceX != 0) {
+//                if (distanceX != 0) {
+//                    startScrolling()
+//                    listener.onScroll(distanceX)
+//                    lastTouchedX = event.x
+//                }
+
+                if (Math.abs(mDownTouchX-event.x)> DISTANCE_MINE&&distanceX != 0){
                     startScrolling()
                     listener.onScroll(distanceX)
                     lastTouchedX = event.x
+                }
+            }
+            MotionEvent.ACTION_UP->{
+                if (Math.abs(mDownTouchX-event.x)<= DISTANCE_MINE){
+                    listener.onClick(event.x,event.y)
                 }
             }
         }
@@ -222,5 +237,10 @@ class RuleScroller(private val context: Context, private val listener: Scrolling
          * 校验完成,执行完毕后回调
          * */
         fun onFinished()
+
+        /**
+         * 点击事件
+         * */
+        fun onClick(x: Float, y: Float)
     }
 }

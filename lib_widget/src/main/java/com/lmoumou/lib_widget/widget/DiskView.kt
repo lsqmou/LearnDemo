@@ -45,6 +45,7 @@ class DiskView : View {
                     }
                 }
             }
+            ta.recycle()
         }
 
     }

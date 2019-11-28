@@ -12,4 +12,43 @@
         <attr name="dv_text_size_select" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="RuleView">
+        <!--分割线颜色-->
+        <attr name="rv_space_line_color" format="color"/>
+        <!--分割线宽-->
+        <attr name="rv_space_line_size" format="dimension"/>
+        <!--分割线间距-->
+        <attr name="rv_space_line_space" format="dimension"/>
+
+        <!--文字正常颜色-->
+        <attr name="rv_text_color_normal" format="color"/>
+        <!--文字选中颜色-->
+        <attr name="rv_text_color_select" format="color"/>
+        <!--文字正常大小-->
+        <attr name="rv_text_size_normal" format="dimension"/>
+        <!--文字选中大小-->
+        <attr name="rv_text_size_select" format="dimension"/>
+
+        <!--折线颜色-->
+        <attr name="rv_fold_line_color" format="color"/>
+        <!--折线宽-->
+        <attr name="rv_fold_line_size" format="dimension"/>
+
+        <!--矩形选中标记背景色-->
+        <attr name="rv_mark_color_select" format="color"/>
+
+        <!--折线点选中颜色-->
+        <attr name="rv_point_color_select" format="color"/>
+        <!--折线点选中颜色-->
+        <attr name="rv_point_color_normal" format="color"/>
+        <!--折线点半径-->
+        <attr name="rv_point_radius" format="dimension"/>
+
+        <!--单位-->
+        <attr name="rv_point_unit" format="string"/>
+
+        <!--最大分数值-->
+        <attr name="rv_max_score" format="dimension"/>
+    </declare-styleable>
+
 </resources>
