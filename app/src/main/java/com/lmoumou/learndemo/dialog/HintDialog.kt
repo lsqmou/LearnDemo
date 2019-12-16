@@ -32,21 +32,25 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
             val window = it.window
 
             //弹窗宽高
-            val dm = DisplayMetrics()
-            activity?.windowManager?.defaultDisplay?.getMetrics(dm)
-            window.setLayout((dm.widthPixels * 0.7).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            if (params.withPercentage <= 0.0F) {
+                window.setLayout(params.with, ViewGroup.LayoutParams.WRAP_CONTENT)
+            } else {
+                val dm = DisplayMetrics()
+                activity?.windowManager?.defaultDisplay?.getMetrics(dm)
+                window.setLayout((dm.widthPixels * params.withPercentage).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
 
             //背景
             window.setBackgroundDrawable(ColorDrawable(0))
             //动画
             window.setWindowAnimations(android.R.style.Animation_Dialog)
 
-            val params = window.attributes
+            val windowParams = window.attributes
             //居屏幕中间显示
-            params.gravity = Gravity.CENTER
+            windowParams.gravity = Gravity.CENTER
             //背景透明度
-            params.dimAmount = 0.5F
-            window.attributes = params
+            windowParams.dimAmount = 0.5F
+            window.attributes = windowParams
         }
     }
 
@@ -54,8 +58,8 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
         super.onCreate(savedInstanceState)
         //样式
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
-
-        isCancelable=params.mCancelable
+        //点击返回键是否消失
+        isCancelable = params.mCancelable
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -90,6 +94,20 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
         }
 
         /**
+         * 弹窗宽
+         * */
+        fun setWith(value: Int = ViewGroup.LayoutParams.WRAP_CONTENT): HintDialog.Builder {
+            params.with = value
+            return this
+        }
+
+        fun setWithPercentage(value: Float): HintDialog.Builder {
+            params.withPercentage = value
+            return this
+        }
+
+
+        /**
          * 点击返回键是否消失
          * */
         fun setCancelable(cancelable: Boolean): HintDialog.Builder {
@@ -100,8 +118,8 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
         /**
          * 点击屏幕是否消失
          * */
-        fun setOutSide(outSide:Boolean):HintDialog.Builder{
-            params.mOutSide=outSide
+        fun setOutSide(outSide: Boolean): HintDialog.Builder {
+            params.mOutSide = outSide
             return this
         }
 
