@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
                     Permission.READ_EXTERNAL_STORAGE,
                     Permission.WRITE_EXTERNAL_STORAGE,
                     Permission.RECORD_AUDIO
-                ))
+                )
+            )
             .start()
         initData()
 
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             2 -> RichTextActivity.startThis(this@MainActivity)
                             3 -> PDFActivity.startThis(this@MainActivity)
+                            4 -> CustomHintDialogActivity.startThis(this@MainActivity)
                         }
                     }
                 }
@@ -71,5 +73,6 @@ class MainActivity : AppCompatActivity() {
         dataList.add("日历2222")
         dataList.add("富文本")
         dataList.add("pdf展示")
+        dataList.add("自定义提示弹窗")
     }
 }
