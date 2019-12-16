@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import com.lmoumou.lib_calendar.CalendarActivity2
 import com.lmoumou.lib_widget.ui.WidgetActivity
 import com.soandso.lib_pdf.PDFActivity
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.runtime.Permission
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_main.view.*
 
@@ -23,6 +25,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        AndPermission.with(this)
+            .runtime()
+            .permission(
+                arrayOf(
+                    Permission.READ_EXTERNAL_STORAGE,
+                    Permission.WRITE_EXTERNAL_STORAGE,
+                    Permission.RECORD_AUDIO
+                ))
+            .start()
         initData()
 
         mRecyclerView.layoutManager = LinearLayoutManager(this)

@@ -52,7 +52,8 @@ class WidgetActivity : AppCompatActivity() {
                             5 -> TemperatureActivity.startThis(this@WidgetActivity)
                             6 -> ShockCircleActivity.startThis(this@WidgetActivity)
                             7 -> DashboardActivity.startThis(this@WidgetActivity)
-                            8->RuleActivity.startThis(this@WidgetActivity)
+                            8 -> RuleActivity.startThis(this@WidgetActivity)
+                            9 -> RecordVoiceActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -74,5 +75,6 @@ class WidgetActivity : AppCompatActivity() {
         dataList.add("震动圆")
         dataList.add("仪表盘")
         dataList.add("刻度")
+        dataList.add("录音")
     }
 }

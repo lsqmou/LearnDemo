@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/lib_calendar" />
             <option value="$PROJECT_DIR$/lib_pdf" />
             <option value="$PROJECT_DIR$/lib_widget" />
+            <option value="$PROJECT_DIR$/recorderlib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
