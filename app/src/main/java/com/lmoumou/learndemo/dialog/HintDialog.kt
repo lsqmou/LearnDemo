@@ -3,11 +3,15 @@ package com.lmoumou.learndemo.dialog
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.content.ContextCompat
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +22,8 @@ import kotlinx.android.synthetic.main.dialog_hint.view.*
 /**
  * @author Lmoumou
  * @date : 2019/12/16 11:11
+ *
+ * 仿照AlertDialog自定义提示弹窗
  */
 @SuppressLint("ValidFragment")
 class HintDialog(private val params: HintParams) : DialogFragment() {
@@ -80,6 +86,17 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
 
         view.tvTitle.text = params.title
 
+        view.tvLeft.text = params.leftText
+        view.tvLeft.setOnClickListener {
+            params.onLeftClickListener?.onClick(it)
+        }
+        view.tvRight.text = params.rightText
+        view.tvRight.setOnClickListener {
+            params.onRightClickListener?.onClick(it)
+        }
+
+        view.lineVertical.setBackgroundColor(params.lineColor)
+        view.lineHorizontal.setBackgroundColor(params.lineColor)
     }
 
     class Builder(context: Context, layoutId: Int = R.layout.dialog_hint) {
@@ -88,7 +105,7 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
         /**
          * 设置标题
          * */
-        fun setTitle(title: String): HintDialog.Builder {
+        fun setTitle(title: CharSequence): HintDialog.Builder {
             params.title = title
             return this
         }
@@ -103,6 +120,37 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
 
         fun setWithPercentage(value: Float): HintDialog.Builder {
             params.withPercentage = value
+            return this
+        }
+
+        /**
+         * 设置左边按钮文本和点击事件
+         * */
+        fun setLeftButton(text: CharSequence, listener: OnClickListener? = null): HintDialog.Builder {
+            params.leftText = text
+            params.onLeftClickListener = listener
+            return this
+        }
+
+        /**
+         * 设置右边按钮文本和点击事件
+         * */
+        fun setRightButton(text: CharSequence, listener: OnClickListener? = null): HintDialog.Builder {
+            params.rightText = text
+            params.onRightClickListener = listener
+            return this
+        }
+
+        /**
+         * 分割线颜色
+         * */
+        fun setLineColor(color: Int): HintDialog.Builder {
+            params.lineColor = color
+            return this
+        }
+
+        fun setLineColorRes(@ColorRes color: Int): HintDialog.Builder {
+            params.lineColor = ContextCompat.getColor(params.context, color)
             return this
         }
 
@@ -133,5 +181,10 @@ class HintDialog(private val params: HintParams) : DialogFragment() {
             dialog.show(supportFragmentManager, HintDialog::class.java.simpleName)
             return dialog
         }
+    }
+
+
+    interface OnClickListener {
+        fun onClick(view: View)
     }
 }
