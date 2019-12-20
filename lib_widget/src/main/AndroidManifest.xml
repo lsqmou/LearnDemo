@@ -35,6 +35,9 @@
         <activity android:name=".ui.RecordVoiceActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.WeiActivity"
+                  android:screenOrientation="portrait"/>
+
         <service android:name="com.zlw.main.recorderlib.recorder.RecordService"
                  android:enabled="true"
                  android:exported="false"/>

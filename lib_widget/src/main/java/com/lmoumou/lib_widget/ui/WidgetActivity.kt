@@ -54,6 +54,7 @@ class WidgetActivity : AppCompatActivity() {
                             7 -> DashboardActivity.startThis(this@WidgetActivity)
                             8 -> RuleActivity.startThis(this@WidgetActivity)
                             9 -> RecordVoiceActivity.startThis(this@WidgetActivity)
+                            10 -> WeiActivity.startThis(this@WidgetActivity)
                         }
                     }
                 }
@@ -76,5 +77,6 @@ class WidgetActivity : AppCompatActivity() {
         dataList.add("仪表盘")
         dataList.add("刻度")
         dataList.add("录音")
+        dataList.add("@，#功能的EditText")
     }
 }
