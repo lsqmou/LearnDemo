@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.lmoumou.lib_widget.R
 import com.lmoumou.lib_widget.widget.RecordVoiceView
+import com.lmoumou.lib_widget.widget.record.RecordButton
 import kotlinx.android.synthetic.main.activity_record_voice.*
 
 /**
@@ -18,7 +19,12 @@ class RecordVoiceActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "RecordVoiceActivity"
         fun startThis(context: Context) {
-            context.startActivity(Intent(context.applicationContext, RecordVoiceActivity::class.java))
+            context.startActivity(
+                Intent(
+                    context.applicationContext,
+                    RecordVoiceActivity::class.java
+                )
+            )
         }
     }
 
@@ -26,22 +32,32 @@ class RecordVoiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_record_voice)
 
-        mRecordVoiceView.recordListener = object : RecordVoiceView.RecordVoiceListener {
-            override fun onStart() {
-                Log.e(TAG, "onStart")
+        mRecordButton.mListener = object : RecordButton.OnRecordListener {
+            override fun onFinish(path: String) {
+                Log.e(TAG, "path->${path}")
             }
 
-            override fun onFinish() {
-                Log.e(TAG, "onFinish")
-            }
-
-            override fun onError(msg: String?) {
-                Log.e(TAG, "onError->$msg")
-            }
-
-            override fun onVoicePath(path: String) {
-                Log.e(TAG, "onVoicePath->$path")
+            override fun onCancel() {
+                Log.e(TAG, "onCancel")
             }
         }
+
+//        mRecordVoiceView.recordListener = object : RecordVoiceView.RecordVoiceListener {
+//            override fun onStart() {
+//                Log.e(TAG, "onStart")
+//            }
+//
+//            override fun onFinish() {
+//                Log.e(TAG, "onFinish")
+//            }
+//
+//            override fun onError(msg: String?) {
+//                Log.e(TAG, "onError->$msg")
+//            }
+//
+//            override fun onVoicePath(path: String) {
+//                Log.e(TAG, "onVoicePath->$path")
+//            }
+//        }
     }
 }

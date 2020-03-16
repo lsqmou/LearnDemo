@@ -8,10 +8,29 @@
           android:layout_height="0dp"
           android:layout_weight="1"/>
 
-
-    <com.lmoumou.lib_widget.widget.RecordVoiceView
-            android:id="@+id/mRecordVoiceView"
+    <com.lmoumou.lib_widget.widget.record.RecordButton
+            android:id="@+id/mRecordButton"
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="按住 说话"
+            android:textColor="#808080"
+            android:background="@drawable/bg_tv_details_edt"
+            android:textSize="14sp"
+            android:layout_marginBottom="5dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"/>
+
+
+    <!--<com.lmoumou.lib_widget.widget.RecordVoiceView
+            android:id="@+id/mRecordVoiceView"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>-->
 
 </LinearLayout>
